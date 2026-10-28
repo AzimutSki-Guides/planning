@@ -245,6 +245,16 @@
       text-decoration: underline;
     }
 
+    .section-dispos-title {
+      display: none;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 24px;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
     .summary-box {
       background: #ffffff;
       border: 1px solid var(--border);
@@ -1207,7 +1217,7 @@
     </div>
   </div>
 
-  <!-- POPIN / MODAL DES QUESTIONS PROFIL GUIDE (OUVERTE VIA LE BOUTON ÉDITER MON PROFIL) -->
+  <!-- POPIN / MODAL DES QUESTIONS PROFIL GUIDE -->
   <div class="modal fade" id="profileModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
@@ -1216,7 +1226,6 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
         </div>
         <div class="modal-body pt-3" id="profile-modal-body-content">
-          <!-- Les questions du profil sont déplacées ici ou dans le bloc au besoin -->
         </div>
         <div class="modal-footer border-top-0 pt-0">
           <button id="btn-ok-profile-modal" class="btn-ok-profile w-100 py-2 rounded-3" onclick="validerProfilModalEtMasquer()">
@@ -1387,6 +1396,11 @@
     </div>
 
     <div id="banner" class="status-banner"></div>
+
+    <!-- TITRE DE SECTION POUR LES DISPOS MOIS PAR MOIS -->
+    <div id="section-dispos-title" class="section-dispos-title">
+      📅 Tes dispos mois par mois
+    </div>
 
     <main id="months-wrapper"></main>
 
@@ -1575,6 +1589,9 @@
     }
 
     function demarrerRemplissageDispos() {
+      const sectionTitle = document.getElementById('section-dispos-title');
+      if (sectionTitle) sectionTitle.style.display = 'block';
+
       const card0 = document.getElementById('month-card-0');
       if (card0) {
         card0.classList.add('active');
@@ -1583,7 +1600,11 @@
         actualiserVerrouillageModifier();
         actualiserVisibiliteBadgeRecap(0);
         setTimeout(() => {
-          card0.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (sectionTitle) {
+            sectionTitle.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } else {
+            card0.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
         }, 100);
       }
 
@@ -2458,6 +2479,10 @@
           aDesDonneesEnregistrees = true;
           document.getElementById('start-btn').style.display = 'none';
           document.getElementById('save-btn').style.display = 'block';
+          
+          const sectionTitle = document.getElementById('section-dispos-title');
+          if (sectionTitle) sectionTitle.style.display = 'block';
+
           restaurerAffichageMois();
           actualiserRecap();
           afficherMessage("ℹ️ Tes disponibilités enregistrées ont été chargées. Tu peux les modifier et valider tes changements à tout moment.", "success");
@@ -2482,6 +2507,10 @@
     function reinitialiserProgressionVierge() {
       document.getElementById('start-btn').style.display = 'block';
       document.getElementById('save-btn').style.display = 'none';
+      
+      const sectionTitle = document.getElementById('section-dispos-title');
+      if (sectionTitle) sectionTitle.style.display = 'none';
+
       moisOuvertEnEdition = null;
 
       structureMois.forEach((_, index) => {

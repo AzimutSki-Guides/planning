@@ -186,43 +186,13 @@
       margin-top: 10px;
     }
 
-    .btn-trigger-questions-container {
-      display: flex;
-      justify-content: center;
-      margin-top: 14px;
-    }
-
-    .btn-trigger-questions {
-      background-color: #ffffff;
-      color: #0284c7;
-      border: 1px solid #0284c7;
-      border-radius: 8px;
-      padding: 8px 18px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: all 0.15s ease;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-
-    .btn-trigger-questions:hover {
-      background-color: #f0f9ff;
-      border-color: #0369a1;
-      color: #0369a1;
-    }
-
-    .profile-questions-block {
+    .inline-profile-card {
       background: #ffffff;
       border: 1px solid #cbd5e1;
-      border-radius: 10px;
-      padding: 16px;
-      margin: 14px 0;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-      color: var(--text);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
       display: none;
     }
 
@@ -243,9 +213,9 @@
       background-color: var(--primary);
       color: #ffffff;
       border: none;
-      padding: 8px 20px;
-      border-radius: 6px;
-      font-size: 0.85rem;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 0.88rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -1237,7 +1207,7 @@
     </div>
   </div>
 
-  <!-- POPIN / MODAL DES QUESTIONS PROFIL GUIDE -->
+  <!-- POPIN / MODAL DES QUESTIONS PROFIL GUIDE (OUVERTE VIA LE BOUTON ÉDITER MON PROFIL) -->
   <div class="modal fade" id="profileModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
@@ -1245,64 +1215,11 @@
           <h5 class="modal-title fw-bold fs-6 text-dark">📋 Mon profil Guide</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
         </div>
-        <div class="modal-body pt-3">
-          
-          <!-- Question 1 -->
-          <div class="mb-3">
-            <div class="profile-q-title">1. Tu es ...</div>
-            <div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input profile-q" type="radio" name="q1_qualification" id="q1_aspi" value="Aspi guide">
-                <label class="form-check-label" for="q1_aspi">Aspi guide</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input profile-q" type="radio" name="q1_qualification" id="q1_guide" value="Guide">
-                <label class="form-check-label" for="q1_guide">Guide</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input profile-q" type="radio" name="q1_qualification" id="q1_ski" value="Moniteur de ski">
-                <label class="form-check-label" for="q1_ski">Moniteur de ski</label>
-              </div>
-            </div>
-          </div>
-
-          <!-- Question 2 -->
-          <div class="mb-3">
-            <div class="profile-q-title">2. Tu préfères ...</div>
-            <div>
-              <div class="form-check">
-                <input class="form-check-input profile-q" type="radio" name="q2_pref" id="q2_freeride" value="Les séjours freeride">
-                <label class="form-check-label" for="q2_freeride">Les séjours freeride</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input profile-q" type="radio" name="q2_pref" id="q2_rando" value="Les séjours ski de rando">
-                <label class="form-check-label" for="q2_rando">Les séjours ski de rando</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input profile-q" type="radio" name="q2_pref" id="q2_lesdeux" value="Les deux ça me va !">
-                <label class="form-check-label" for="q2_lesdeux">Les deux ça me va !</label>
-              </div>
-            </div>
-          </div>
-
-          <!-- Question 3 -->
-          <div class="mb-3">
-            <div class="profile-q-title">3. Un séjour avec des anglophones ?</div>
-            <div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input profile-q" type="radio" name="q3_anglo" id="q3_ok" value="Pas de problème !">
-                <label class="form-check-label" for="q3_ok">Pas de problème !</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input profile-q" type="radio" name="q3_anglo" id="q3_ko" value="Ca va être compliqué...">
-                <label class="form-check-label" for="q3_ko">Ca va être compliqué...</label>
-              </div>
-            </div>
-          </div>
-
+        <div class="modal-body pt-3" id="profile-modal-body-content">
+          <!-- Les questions du profil sont déplacées ici ou dans le bloc au besoin -->
         </div>
         <div class="modal-footer border-top-0 pt-0">
-          <button id="btn-ok-profile" class="btn-ok-profile w-100 py-2 rounded-3" onclick="validerProfilEtMasquer()" disabled>
+          <button id="btn-ok-profile-modal" class="btn-ok-profile w-100 py-2 rounded-3" onclick="validerProfilModalEtMasquer()">
             Enregistrer mon profil ✓
           </button>
         </div>
@@ -1338,7 +1255,7 @@
       <div class="inline-loader-text">Chargement des données...</div>
     </div>
 
-    <!-- CARTE D'ACCUEIL & PRÉAMBULE PROFIL GUIDE -->
+    <!-- CARTE D'ACCUEIL INTRODUCTIVE -->
     <div id="welcome-notice" class="welcome-notice" style="display: none;">
       <p id="welcome-text-short">Hello ✌️ Cet outil te permet de renseigner tes dispos pour la saison avec Azimut.</p>
       
@@ -1347,20 +1264,80 @@
         <p>ℹ️ Ce formulaire est personnel : toi seul y as accès, et tu pourras revenir modifier tes choix à tout moment !</p>
       </div>
 
-      <!-- BOUTON DE DEPLIEMENT DU FORMULAIRE PROFIL DANS LE BLOC INTRO (SI NON RENSEIGNÉ) -->
-      <div id="btn-trigger-questions-wrapper" class="btn-trigger-questions-container">
-        <button id="btn-trigger-questions" class="btn-trigger-questions" onclick="toggleQuestionsProfil()">
-          📋 2-3 questions avant de débuter
-        </button>
-      </div>
-
-      <!-- BLOC D'ORIGINE DÉPLIABLE (UTILISÉ UNIQUEMENT SI PREMIÈRE VISITE SANS POPIN) -->
-      <div id="profile-questions-block" class="profile-questions-block"></div>
-
       <button id="btn-toggle-welcome" class="btn-toggle-welcome" onclick="toggleTexteAccueil()" style="display: none;">
         <span id="label-toggle-welcome">Masquer les détails ▴</span>
       </button>
     </div>
+
+    <!-- CARTE DÉDIÉE PROFIL (SOUS L'INTRO) -->
+    <div id="inline-profile-card" class="inline-profile-card">
+      <h6 class="fw-bold text-dark mb-3">📋 2-3 questions pour commencer</h6>
+      <div id="profile-questions-container">
+        <!-- Question 1 -->
+        <div class="mb-3">
+          <div class="profile-q-title">1. Tu es ...</div>
+          <div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input profile-q" type="radio" name="q1_qualification" id="q1_aspi" value="Aspi guide">
+              <label class="form-check-label" for="q1_aspi">Aspi guide</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input profile-q" type="radio" name="q1_qualification" id="q1_guide" value="Guide">
+              <label class="form-check-label" for="q1_guide">Guide</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input profile-q" type="radio" name="q1_qualification" id="q1_ski" value="Moniteur de ski">
+              <label class="form-check-label" for="q1_ski">Moniteur de ski</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="mb-3">
+          <div class="profile-q-title">2. Tu préfères ...</div>
+          <div>
+            <div class="form-check">
+              <input class="form-check-input profile-q" type="radio" name="q2_pref" id="q2_freeride" value="Les séjours freeride">
+              <label class="form-check-label" for="q2_freeride">Les séjours freeride</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input profile-q" type="radio" name="q2_pref" id="q2_rando" value="Les séjours ski de rando">
+              <label class="form-check-label" for="q2_rando">Les séjours ski de rando</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input profile-q" type="radio" name="q2_pref" id="q2_lesdeux" value="Les deux ça me va !">
+              <label class="form-check-label" for="q2_lesdeux">Les deux ça me va !</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="mb-3">
+          <div class="profile-q-title">3. Un séjour avec des anglophones ?</div>
+          <div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input profile-q" type="radio" name="q3_anglo" id="q3_ok" value="Pas de problème !">
+              <label class="form-check-label" for="q3_ok">Pas de problème !</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input profile-q" type="radio" name="q3_anglo" id="q3_ko" value="Ca va être compliqué...">
+              <label class="form-check-label" for="q3_ko">Ca va être compliqué...</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-end pt-2 border-top mt-3">
+        <button id="btn-ok-profile-inline" class="btn-ok-profile" onclick="validerProfilInlineEtContinuer()" disabled>
+          Valider mon profil →
+        </button>
+      </div>
+    </div>
+
+    <!-- BOUTON D'ACTION PRINCIPAL ("C'EST PARTI") -->
+    <button id="start-btn" class="btn-start" onclick="clicCestParti()">
+      🚀 C'est parti !
+    </button>
 
     <!-- BLOC RÉCAPITULATIF -->
     <div id="summary-section" class="summary-box">
@@ -1408,10 +1385,6 @@
         </div>
       </div>
     </div>
-
-    <button id="start-btn" class="btn-start" onclick="demarrerRemplissage()" disabled>
-      🚀 Je renseigne mes disponibilités
-    </button>
 
     <div id="banner" class="status-banner"></div>
 
@@ -1465,6 +1438,7 @@
     let moisOuvertEnEdition = null; 
     let aDesModifications = false;
     let aDesDonneesEnregistrees = false;
+    let profilRenseigneSurServeur = false;
     let aEteAvertiSauvegarde = false;
     let modalConfirmationEndInstance = null;
     let modalProfileInstance = null;
@@ -1509,31 +1483,46 @@
       chargerDonneesGoogleSheets();
     }
 
-    function toggleQuestionsProfil() {
-      if (modalProfileInstance) {
-        modalProfileInstance.show();
+    function clicCestParti() {
+      document.getElementById('start-btn').style.display = 'none';
+
+      if (profilRenseigneSurServeur) {
+        demarrerRemplissageDispos();
+      } else {
+        const profileCard = document.getElementById('inline-profile-card');
+        if (profileCard) {
+          profileCard.style.display = 'block';
+          profileCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       }
     }
 
     function ouvrirProfilEdit() {
+      const questionsContainer = document.getElementById('profile-questions-container');
+      const modalBody = document.getElementById('profile-modal-body-content');
+
+      if (questionsContainer && modalBody) {
+        modalBody.appendChild(questionsContainer);
+      }
+
       if (modalProfileInstance) {
         modalProfileInstance.show();
       }
     }
 
-    function validerProfilEtMasquer() {
-      if (modalProfileInstance) {
-        modalProfileInstance.hide();
-      }
+    function validerProfilInlineEtContinuer() {
+      document.getElementById('inline-profile-card').style.display = 'none';
+      profilRenseigneSurServeur = true;
 
-      const btnWrapper = document.getElementById('btn-trigger-questions-wrapper');
       const btnEditProfile = document.getElementById('btn-edit-profile');
-
-      if (btnWrapper) btnWrapper.style.display = 'none';
       if (btnEditProfile) btnEditProfile.style.display = 'inline-block';
 
-      if (!aDesDonneesEnregistrees) {
-        demarrerRemplissage();
+      demarrerRemplissageDispos();
+    }
+
+    function validerProfilModalEtMasquer() {
+      if (modalProfileInstance) {
+        modalProfileInstance.hide();
       }
     }
 
@@ -1542,16 +1531,16 @@
       const q2 = document.querySelector('input[name="q2_pref"]:checked');
       const q3 = document.querySelector('input[name="q3_anglo"]:checked');
 
-      const startBtn = document.getElementById('start-btn');
-      const btnOk = document.getElementById('btn-ok-profile');
+      const btnOkInline = document.getElementById('btn-ok-profile-inline');
+      const btnOkModal = document.getElementById('btn-ok-profile-modal');
 
       if (q1 && q2 && q3) {
-        if (startBtn) startBtn.disabled = false;
-        if (btnOk) btnOk.disabled = false;
+        if (btnOkInline) btnOkInline.disabled = false;
+        if (btnOkModal) btnOkModal.disabled = false;
         return true;
       } else {
-        if (startBtn) startBtn.disabled = true;
-        if (btnOk) btnOk.disabled = true;
+        if (btnOkInline) btnOkInline.disabled = true;
+        if (btnOkModal) btnOkModal.disabled = true;
         return false;
       }
     }
@@ -1585,9 +1574,7 @@
       }
     }
 
-    function demarrerRemplissage() {
-      document.getElementById('start-btn').style.display = 'none';
-      
+    function demarrerRemplissageDispos() {
       const card0 = document.getElementById('month-card-0');
       if (card0) {
         card0.classList.add('active');
@@ -2384,7 +2371,7 @@
         `;
 
         // Restauration du Profil Guide (Onglet 1)
-        let profilRenseigne = false;
+        profilRenseigneSurServeur = false;
         if (result.profile) {
           if (result.profile.qualification) {
             const r1 = document.querySelector(`input[name="q1_qualification"][value="${result.profile.qualification}"]`);
@@ -2398,14 +2385,12 @@
             const r3 = document.querySelector(`input[name="q3_anglo"][value="${result.profile.anglophones}"]`);
             if (r3) r3.checked = true;
           }
-          profilRenseigne = verifierFormulaireProfilComplet();
+          profilRenseigneSurServeur = verifierFormulaireProfilComplet();
         }
 
-        if (profilRenseigne) {
-          const btnTriggerWrapper = document.getElementById('btn-trigger-questions-wrapper');
-          const btnEditProfile = document.getElementById('btn-edit-profile');
-          if (btnTriggerWrapper) btnTriggerWrapper.style.display = 'none';
-          if (btnEditProfile) btnEditProfile.style.display = 'inline-block';
+        const btnEditProfile = document.getElementById('btn-edit-profile');
+        if (profilRenseigneSurServeur && btnEditProfile) {
+          btnEditProfile.style.display = 'inline-block';
         }
 
         let aAussiDesDisposAuteursGuide = false;

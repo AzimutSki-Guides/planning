@@ -946,6 +946,41 @@
       cursor: default;
     }
 
+    /* LOADER ÉPURÉ INLINE */
+    .inline-loader-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-align: center;
+    }
+
+    .inline-loader-card.active {
+      display: flex;
+    }
+
+    .inline-spinner {
+      width: 24px;
+      height: 24px;
+      border: 3px solid #e2e8f0;
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      flex-shrink: 0;
+    }
+
+    .inline-loader-text {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
     .loading-overlay {
       position: fixed;
       top: 0;
@@ -1101,6 +1136,7 @@
     </div>
   </div>
 
+  <!-- LOADER FULLSCREEN (uniquement pour l'enregistrement) -->
   <div id="loading-overlay" class="loading-overlay">
     <div class="spinner"></div>
     <div style="font-weight: 600; font-size: 1rem;">Enregistrement de tes disponibilités...</div>
@@ -1122,6 +1158,12 @@
         <span class="guide-name">Chargement...</span>
       </div>
     </header>
+
+    <!-- PETIT LOADER ÉPURÉ AU CHARGEMENT INITIAL -->
+    <div id="inline-loader" class="inline-loader-card">
+      <div class="inline-spinner"></div>
+      <div class="inline-loader-text">Chargement des données...</div>
+    </div>
 
     <div id="welcome-notice" class="welcome-notice" style="display: none;">
       <p id="welcome-text-short">Hello ✌️ Cet outil te permet de renseigner tes dispos pour la saison avec Azimut.</p>
@@ -2030,7 +2072,11 @@
 
     // CHARGEMENT VIA GOOGLE APPS SCRIPT
     async function chargerDonneesGoogleSheets() {
+      const inlineLoader = document.getElementById('inline-loader');
+      if (inlineLoader) inlineLoader.classList.add('active');
+
       if (!guideTokenParam) {
+        if (inlineLoader) inlineLoader.classList.remove('active');
         document.getElementById('guide-info').innerHTML = '<span class="guide-label">Accès :</span> <span class="guide-name">Refusé</span>';
         document.getElementById('months-wrapper').style.display = 'none';
         document.getElementById('save-btn').style.display = 'none';
@@ -2046,6 +2092,7 @@
         const result = await response.json();
 
         if (result.status !== "success") {
+          if (inlineLoader) inlineLoader.classList.remove('active');
           document.getElementById('guide-info').innerHTML = '<span class="guide-label">Accès :</span> <span class="guide-name">Refusé</span>';
           document.getElementById('months-wrapper').style.display = 'none';
           document.getElementById('save-btn').style.display = 'none';
@@ -2065,60 +2112,66 @@
 
         let aAussiDesDisposAuteursGuide = false;
 
-        if (result.dispos && result.dispos.length > 0) {
-          result.dispos.forEach(row => {
-            const valSemaine = row.semaine;
-            const valStatut = row.statut;
-            const sejourVal = row.sejour;
-            const dateDepartVal = row.dateDepart;
-            const comVal = row.commentaire;
+// REMPLACER CE BLOC DANS chargerDonneesGoogleSheets() :
+if (result.dispos && result.dispos.length > 0) {
+  result.dispos.forEach(row => {
+    const valSemaine = row.semaine;
+    const valStatut = row.statut;
+    
+    // CORRECTION ICI : fallback sur idSejour ou nomSejour pour éviter le décalage de clés
+    const sejourVal = row.nomSejour || row.idSejour || row.sejour || "";
+    const dateDepartVal = row.dateDepart || "";
+    const comVal = row.commentaire || "";
 
-            if (valSemaine) {
-              const semNormaliseeRow = cleanSem(valSemaine);
-              
-              structureMois.forEach(m => {
-                m.semaines.forEach(semStructure => {
-                  if (cleanSem(semStructure.code) === semNormaliseeRow) {
-                    if (sejourVal && sejourVal.trim() !== "") {
-                      const estMultiple = sejourVal.includes(" / ");
-                      const nbSejours = estMultiple ? sejourVal.split(" / ").length : 1;
+    if (valSemaine) {
+      const semNormaliseeRow = cleanSem(valSemaine);
+      
+      structureMois.forEach(m => {
+        m.semaines.forEach(semStructure => {
+          if (cleanSem(semStructure.code) === semNormaliseeRow) {
+            
+            // Si une information de séjour existe (Col D ou Col E)
+            if (sejourVal && sejourVal.trim() !== "") {
+              const estMultiple = sejourVal.includes(" / ");
+              const nbSejours = estMultiple ? sejourVal.split(" / ").length : 1;
 
-                      sejoursAgence[semStructure.code] = {
-                        nom: sejourVal,
-                        date: dateDepartVal || "",
-                        nbSejours: nbSejours
-                      };
-                    } else if (valStatut) {
-                      disposGuide[semStructure.code] = valStatut;
-                      aAussiDesDisposAuteursGuide = true;
-                    }
-
-                    if (comVal && comVal.trim() !== "") {
-                      commentairesMois[m.id] = comVal;
-                      commentairesValidesMois[m.id] = true;
-                      const txtArea = document.getElementById(`comment-${m.id}`);
-                      const box = document.getElementById(`comment-box-${m.id}`);
-                      const btnAction = document.getElementById(`btn-action-com-${m.id}`);
-                      const btnToggle = document.getElementById(`btn-toggle-com-${m.id}`);
-
-                      if (txtArea) {
-                        txtArea.value = comVal;
-                        txtArea.disabled = true;
-                      }
-                      if (btnAction) {
-                        btnAction.textContent = '✏️ Modifier';
-                        btnAction.disabled = false;
-                        btnAction.classList.add('validated-mode');
-                      }
-                      if (btnToggle) btnToggle.textContent = '🗑️ Supprimer ma remarque';
-                      if (box) box.classList.add('open');
-                    }
-                  }
-                });
-              });
+              sejoursAgence[semStructure.code] = {
+                nom: sejourVal,
+                date: dateDepartVal,
+                nbSejours: nbSejours
+              };
+            } else if (valStatut) {
+              disposGuide[semStructure.code] = valStatut;
+              aAussiDesDisposAuteursGuide = true;
             }
-          });
-        }
+
+            // Remarques mensuelles (Col G)
+            if (comVal && comVal.trim() !== "") {
+              commentairesMois[m.id] = comVal;
+              commentairesValidesMois[m.id] = true;
+              const txtArea = document.getElementById(`comment-${m.id}`);
+              const box = document.getElementById(`comment-box-${m.id}`);
+              const btnAction = document.getElementById(`btn-action-com-${m.id}`);
+              const btnToggle = document.getElementById(`btn-toggle-com-${m.id}`);
+
+              if (txtArea) {
+                txtArea.value = comVal;
+                txtArea.disabled = true;
+              }
+              if (btnAction) {
+                btnAction.textContent = '✏️ Modifier';
+                btnAction.disabled = false;
+                btnAction.classList.add('validated-mode');
+              }
+              if (btnToggle) btnToggle.textContent = '🗑️ Supprimer ma remarque';
+              if (box) box.classList.add('open');
+            }
+          }
+        });
+      });
+    }
+  });
+}
 
         aEteAvertiSauvegarde = false;
 
@@ -2138,8 +2191,11 @@
         actualiserVerrouillageModifier();
         actualiserEtatBouton();
 
+        if (inlineLoader) inlineLoader.classList.remove('active');
+
       } catch (err) {
         console.error("Erreur de lecture Google Sheets :", err);
+        if (inlineLoader) inlineLoader.classList.remove('active');
         afficherMessage("Erreur de connexion au serveur.", "error");
       }
     }
@@ -2190,7 +2246,8 @@
       const btn = document.getElementById('save-btn');
       const overlay = document.getElementById('loading-overlay');
 
-      overlay.classList.add('active');
+      if (overlay) overlay.classList.add('active');
+
       estBoutonSauvegardePret = false;
       btn.classList.remove('highlight-pulse');
 
@@ -2226,7 +2283,7 @@
         const result = await response.json();
 
         if (result.status !== "success") {
-          overlay.classList.remove('active');
+          if (overlay) overlay.classList.remove('active');
           afficherMessage("Erreur d'enregistrement : " + (result.message || "Erreur serveur"), "error");
           actualiserEtatBouton();
           return;
@@ -2235,7 +2292,7 @@
         aDesModifications = false;
         aDesDonneesEnregistrees = true;
         aEteAvertiSauvegarde = false;
-        overlay.classList.remove('active');
+        if (overlay) overlay.classList.remove('active');
 
         actualiserRecap();
         
@@ -2250,7 +2307,7 @@
 
       } catch (err) {
         console.error("Erreur enregistrement :", err);
-        overlay.classList.remove('active');
+        if (overlay) overlay.classList.remove('active');
         afficherMessage("Erreur réseau lors de l'enregistrement.", "error");
         actualiserEtatBouton();
       }

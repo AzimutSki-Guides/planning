@@ -246,6 +246,31 @@
       text-decoration: underline;
     }
 
+    .btn-toggle-dispos-block {
+      display: none;
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 12px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      margin-bottom: 20px;
+      text-align: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+    }
+
+    .btn-toggle-dispos-block:hover {
+      background: #f1f5f9;
+    }
+
+    #dispos-full-wrapper {
+      display: block;
+    }
+
     .section-dispos-title {
       display: none;
       font-size: 1.05rem;
@@ -1261,6 +1286,9 @@
       <div class="inline-loader-text">Chargement des données...</div>
     </div>
 
+    <!-- BANNIÈRE DE MESSAGE DE CONFIRMATION / INFORMATION (PLACÉE AU DESSUS DU RÉCAPITULATIF) -->
+    <div id="banner" class="status-banner"></div>
+
     <!-- CARTE D'ACCUEIL INTRODUCTIVE -->
     <div id="welcome-notice" class="welcome-notice" style="display: none;">
       <p id="welcome-text-short">Hello ✌️ Cet outil te permet de renseigner tes dispos pour la saison avec Azimut.</p>
@@ -1389,17 +1417,24 @@
       </div>
     </div>
 
-    <div id="banner" class="status-banner"></div>
+    <!-- BOUTON DE REPLIEMENT DES DISPOS -->
+    <button id="btn-toggle-dispos-block" class="btn-toggle-dispos-block" onclick="toggleBlocDisposFull()">
+      ✏️ Voir ou modifier mes dispos
+    </button>
 
-    <div id="section-dispos-title" class="section-dispos-title">
-      📅 Tes dispos mois par mois
+    <!-- ENVELOPPE CONTENANT LE DETAIL ET LE BOUTON D'ENREGISTREMENT -->
+    <div id="dispos-full-wrapper">
+      <div id="section-dispos-title" class="section-dispos-title">
+        📅 Tes dispos mois par mois
+      </div>
+
+      <main id="months-wrapper"></main>
+
+      <div class="save-btn-wrapper">
+        <button id="save-btn" class="btn-save btn-disabled" onclick="handleClicEnregistrer()">Valide tous les mois pour pouvoir enregistrer</button>
+      </div>
     </div>
 
-    <main id="months-wrapper"></main>
-
-    <div class="save-btn-wrapper">
-      <button id="save-btn" class="btn-save btn-disabled" onclick="handleClicEnregistrer()">Valide tous les mois pour pouvoir enregistrer</button>
-    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -1457,7 +1492,6 @@
     const urlParams = new URLSearchParams(window.location.search);
     const guideTokenParam = urlParams.get('token') || "";
 
-    // Fonction d'extraction stricte du code exact de semaine (ex: "S5", "S51")
     const extraireCodeSemaine = (str) => {
       const match = String(str || '').match(/S\d+/i);
       return match ? match[0].toUpperCase() : '';
@@ -1494,6 +1528,22 @@
       
       renderMonthsHTML();
       chargerDonneesGoogleSheets();
+    }
+
+    function toggleBlocDisposFull() {
+      const wrapper = document.getElementById('dispos-full-wrapper');
+      const btnToggle = document.getElementById('btn-toggle-dispos-block');
+
+      if (wrapper.style.display === 'none' || wrapper.style.display === '') {
+        wrapper.style.display = 'block';
+        btnToggle.textContent = '▲ Masquer le formulaire de dispos';
+        setTimeout(() => {
+          wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      } else {
+        wrapper.style.display = 'none';
+        btnToggle.textContent = '✏️ Voir ou modifier mes dispos';
+      }
     }
 
     function clicCestParti() {
@@ -1586,6 +1636,9 @@
     }
 
     function demarrerRemplissageDispos() {
+      const wrapper = document.getElementById('dispos-full-wrapper');
+      wrapper.style.display = 'block';
+
       const sectionTitle = document.getElementById('section-dispos-title');
       if (sectionTitle) sectionTitle.style.display = 'block';
 
@@ -1736,7 +1789,13 @@
 
       if (aDesDonneesEnregistrees) {
         btn.style.display = 'block';
-        if (aDesModifications) {
+
+        // Si un mois est réouvert et en cours d'édition
+        if (moisOuvertEnEdition !== null) {
+          estBoutonSauvegardePret = false;
+          btn.className = "btn-save btn-disabled";
+          btn.textContent = "Valide le mois en cours pour enregistrer";
+        } else if (aDesModifications) {
           estBoutonSauvegardePret = true;
           btn.className = "btn-save ready";
           btn.textContent = "💾 Enregistrer mes modifications";
@@ -1746,7 +1805,7 @@
           btn.textContent = "Aucune modification à enregistrer";
         }
       } else {
-        if (tousLesMoisCompletes) {
+        if (tousLesMoisCompletes && moisOuvertEnEdition === null) {
           estBoutonSauvegardePret = true;
           btn.className = "btn-save ready";
           btn.textContent = "💾 Enregistrer mes disponibilités";
@@ -1796,6 +1855,7 @@
       const sejoursListContainer = document.getElementById('sejours-list-container');
       const btnEspaceAzimut = document.getElementById('btn-espace-azimut-guide');
       const startBtn = document.getElementById('start-btn');
+      const btnToggleDisposBlock = document.getElementById('btn-toggle-dispos-block');
 
       if (!aDesDonneesEnregistrees) {
         welcomeNotice.style.display = 'block';
@@ -1803,6 +1863,7 @@
         btnToggleWelcome.style.display = 'none';
         bottomRow.style.display = 'none';
         disposSubtitle.style.display = 'none';
+        if (btnToggleDisposBlock) btnToggleDisposBlock.style.display = 'none';
 
         if (nbrSejour === 0) {
           summaryBox.style.display = 'none';
@@ -1813,14 +1874,14 @@
           }
         }
       } else {
-        welcomeNotice.style.display = 'block';
-        welcomeMore.style.display = 'none';
-        btnToggleWelcome.style.display = 'inline-flex';
-        if (btnLabelWelcome) btnLabelWelcome.textContent = 'Lire la suite ▾';
+        // RECONNEXION : Masquage total de la notice d'accueil ("Hello...")
+        welcomeNotice.style.display = 'none';
 
         summaryBox.style.display = 'block';
         bottomRow.style.display = 'grid';
         disposSubtitle.style.display = 'block';
+
+        if (btnToggleDisposBlock) btnToggleDisposBlock.style.display = 'block';
       }
 
       if (nbrSejour > 0) {
@@ -2033,7 +2094,6 @@
 
       mois.semaines.forEach(sem => {
         disposGuide[sem.code] = statut;
-        // CONSERVATION : On ne supprime pas les commentaires individuels de chaque semaine !
       });
 
       aDesModifications = true;
@@ -2517,7 +2577,6 @@
             }
           });
 
-          // Post-traitement : Regroupement sous le commentaire du mois si TOUS les commentaires d'un mois sont identiques et non vides
           structureMois.forEach(m => {
             const commsDuMois = m.semaines.map(sem => (commentairesSemaines[sem.code] || "").trim());
             const premierComm = commsDuMois[0];
@@ -2564,6 +2623,9 @@
           restaurerAffichageMois();
           actualiserRecap();
           afficherMessage("ℹ️ Tes disponibilités enregistrées ont été chargées. Tu peux les modifier et valider tes changements à tout moment.", "success");
+          
+          // MASQUAGE DU BLOC DE DISPOS AU CHARGEMENT INITIAL
+          document.getElementById('dispos-full-wrapper').style.display = 'none';
         } else {
           aDesDonneesEnregistrees = false;
           reinitialiserProgressionVierge();
@@ -2585,6 +2647,7 @@
     function reinitialiserProgressionVierge() {
       document.getElementById('start-btn').style.display = 'block';
       document.getElementById('save-btn').style.display = 'none';
+      document.getElementById('dispos-full-wrapper').style.display = 'block';
       
       const sectionTitle = document.getElementById('section-dispos-title');
       if (sectionTitle) sectionTitle.style.display = 'none';
@@ -2646,8 +2709,6 @@
           mois.semaines.forEach(sem => {
             if (!sejoursAgence[sem.code]) {
               const comSem = commentairesSemaines[sem.code] || "";
-              
-              // Sécurisation stricte du code de semaine envoyé au Google Sheet
               const codeClean = extraireCodeSemaine(sem.code);
 
               payloadDispos.push({
@@ -2678,6 +2739,9 @@
         if (overlay) overlay.classList.remove('active');
 
         actualiserRecap();
+
+        // MASQUAGE DU BLOC APRÈS ENREGISTREMENT RÉUSSI
+        document.getElementById('dispos-full-wrapper').style.display = 'none';
         
         btn.className = "btn-save success-state";
         btn.textContent = "✓ Disponibilités enregistrées";

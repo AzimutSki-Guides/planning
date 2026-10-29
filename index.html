@@ -65,7 +65,6 @@
       width: 100%;
     }
 
-    /* HEADER & BADGE GUIDE MAINTENUS À DROITE SUR DESKTOP */
     header {
       display: flex;
       justify-content: space-between;
@@ -180,13 +179,8 @@
       word-break: break-word;
     }
 
-    .welcome-notice p {
-      margin: 0;
-    }
-
-    .welcome-notice p + p {
-      margin-top: 10px;
-    }
+    .welcome-notice p { margin: 0; }
+    .welcome-notice p + p { margin-top: 10px; }
 
     .welcome-more-content {
       display: block;
@@ -381,9 +375,7 @@
       transition: transform 0.2s ease;
     }
 
-    .btn-toggle-sejours.open svg {
-      transform: rotate(180deg);
-    }
+    .btn-toggle-sejours.open svg { transform: rotate(180deg); }
 
     .sejours-list-recap {
       margin-top: 10px;
@@ -710,9 +702,7 @@
       transition: background-color 0.15s ease;
     }
 
-    .info-bubble-trigger:hover {
-      background-color: #64748b;
-    }
+    .info-bubble-trigger:hover { background-color: #64748b; }
 
     .info-bubble-trigger:hover::after {
       content: attr(data-tooltip);
@@ -1065,12 +1055,8 @@
     }
 
     @keyframes pulseGlow {
-      0% {
-        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.4), 0 4px 12px rgba(15, 23, 42, 0.2);
-      }
-      100% {
-        box-shadow: 0 0 0 8px rgba(34, 197, 94, 0.8), 0 8px 24px rgba(15, 23, 42, 0.4);
-      }
+      0% { box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.4), 0 4px 12px rgba(15, 23, 42, 0.2); }
+      100% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0.8), 0 8px 24px rgba(15, 23, 42, 0.4); }
     }
 
     .btn-save.success-state {
@@ -1093,9 +1079,7 @@
       text-align: center;
     }
 
-    .inline-loader-card.active {
-      display: flex;
-    }
+    .inline-loader-card.active { display: flex; }
 
     .inline-spinner {
       width: 24px;
@@ -1115,10 +1099,8 @@
 
     .loading-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
       background-color: rgba(15, 23, 42, 0.6);
       backdrop-filter: blur(4px);
       z-index: 9999;
@@ -1179,9 +1161,7 @@
     }
 
     @media (max-width: 576px) {
-      body {
-        padding: 12px 8px 75px 8px !important;
-      }
+      body { padding: 12px 8px 75px 8px !important; }
       header {
         flex-direction: column;
         text-align: center;
@@ -1198,59 +1178,20 @@
         width: 100%;
         justify-content: center;
       }
-      .summary-box {
-        padding: 12px;
-      }
-      .summary-grid-bottom { 
-        grid-template-columns: repeat(3, 1fr); 
-        gap: 4px; 
-      }
-      .summary-card { 
-        padding: 8px 2px; 
-      }
-      .summary-count { 
-        font-size: 1.05rem; 
-      }
-      .summary-label { 
-        font-size: 0.58rem; 
-      }
-      .month-card {
-        padding: 12px;
-      }
-      .month-choices-top { 
-        grid-template-columns: 1fr; 
-      }
-      .grid-weeks { 
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
-        gap: 6px; 
-      }
-      .opt-btn {
-        font-size: 0.72rem;
-        padding: 5px 0;
-      }
-      .welcome-notice { 
-        font-size: 0.88rem; 
-        padding: 12px 14px; 
-      }
-      .next-btn-wrapper {
-        width: 100%;
-        float: none;
-        margin-top: 12px;
-      }
-      .btn-next {
-        width: 100%;
-        padding: 10px;
-        font-size: 0.85rem;
-      }
-      .incomplet-tooltip-bubble {
-        right: 50%;
-        transform: translateX(50%);
-        width: 90%;
-      }
-      .incomplet-tooltip-bubble::after {
-        right: 50%;
-        transform: translateX(50%);
-      }
+      .summary-box { padding: 12px; }
+      .summary-grid-bottom { grid-template-columns: repeat(3, 1fr); gap: 4px; }
+      .summary-card { padding: 8px 2px; }
+      .summary-count { font-size: 1.05rem; }
+      .summary-label { font-size: 0.58rem; }
+      .month-card { padding: 12px; }
+      .month-choices-top { grid-template-columns: 1fr; }
+      .grid-weeks { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 6px; }
+      .opt-btn { font-size: 0.72rem; padding: 5px 0; }
+      .welcome-notice { font-size: 0.88rem; padding: 12px 14px; }
+      .next-btn-wrapper { width: 100%; float: none; margin-top: 12px; }
+      .btn-next { width: 100%; padding: 10px; font-size: 0.85rem; }
+      .incomplet-tooltip-bubble { right: 50%; transform: translateX(50%); width: 90%; }
+      .incomplet-tooltip-bubble::after { right: 50%; transform: translateX(50%); }
     }
   </style>
 </head>
@@ -1282,8 +1223,7 @@
           <h5 class="modal-title fw-bold fs-6 text-dark">📋 Mon profil Guide</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
         </div>
-        <div class="modal-body pt-3" id="profile-modal-body-content">
-        </div>
+        <div class="modal-body pt-3" id="profile-modal-body-content"></div>
         <div class="modal-footer border-top-0 pt-0">
           <button id="btn-ok-profile-modal" class="btn-ok-profile w-100 py-2 rounded-3" onclick="validerProfilModalEtMasquer()">
             Enregistrer mon profil ✓
@@ -1335,11 +1275,10 @@
       </button>
     </div>
 
-    <!-- CARTE DÉDIÉE PROFIL (SOUS L'INTRO) -->
+    <!-- CARTE DÉDIÉE PROFIL -->
     <div id="inline-profile-card" class="inline-profile-card">
       <h6 class="fw-bold text-dark mb-3">📋 2-3 questions pour commencer</h6>
       <div id="profile-questions-container">
-        <!-- Question 1 -->
         <div class="mb-3">
           <div class="profile-q-title">1. Tu es ...</div>
           <div>
@@ -1358,7 +1297,6 @@
           </div>
         </div>
 
-        <!-- Question 2 -->
         <div class="mb-3">
           <div class="profile-q-title">2. Tu préfères ...</div>
           <div>
@@ -1377,7 +1315,6 @@
           </div>
         </div>
 
-        <!-- Question 3 -->
         <div class="mb-3">
           <div class="profile-q-title">3. Un séjour avec des anglophones ?</div>
           <div>
@@ -1454,7 +1391,6 @@
 
     <div id="banner" class="status-banner"></div>
 
-    <!-- TITRE DE SECTION POUR LES DISPOS MOIS PAR MOIS -->
     <div id="section-dispos-title" class="section-dispos-title">
       📅 Tes dispos mois par mois
     </div>
@@ -1521,8 +1457,11 @@
     const urlParams = new URLSearchParams(window.location.search);
     const guideTokenParam = urlParams.get('token') || "";
 
-    const cleanStr = (s) => String(s || '').toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    const cleanSem = (s) => cleanStr(s).replace(/\s+/g, '').replace(/^s0/, 's');
+    // Fonction d'extraction stricte du code exact de semaine (ex: "S5", "S51")
+    const extraireCodeSemaine = (str) => {
+      const match = String(str || '').match(/S\d+/i);
+      return match ? match[0].toUpperCase() : '';
+    };
 
     document.addEventListener("DOMContentLoaded", () => {
       const modalEndEl = document.getElementById('confirmationEndModal');
@@ -1641,8 +1580,6 @@
           headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify(payload)
         });
-        
-        console.log("Profil envoyé avec succès vers Apps Script");
       } catch (e) {
         console.error("Erreur enregistrement profil :", e);
       }
@@ -1871,7 +1808,6 @@
           summaryBox.style.display = 'none';
         } else {
           summaryBox.style.display = 'block';
-          // Déplacer le bouton "C'est parti" sous le récap de séjours si l'utilisateur n'a pas encore validé de dispos
           if (startBtn && startBtn.style.display !== 'none') {
             summaryBox.parentNode.insertBefore(startBtn, summaryBox.nextSibling);
           }
@@ -1900,13 +1836,11 @@
 
               const dateAffichage = sejour.date ? `Départ : ${sejour.date}` : `${m.nom} (${sem.code.split(' ')[0]})`;
               
-              // Affichage du nombre d'inscrits / pax max
               let paxHtml = "";
               if (sejour.inscrits !== undefined && sejour.paxMax !== undefined) {
                 paxHtml = `<span class="badge-inscrits-pax">👥 ${sejour.inscrits}/${sejour.paxMax} pax</span>`;
               }
 
-              // Affichage de la vignette "Confirmé" si statut confirmé
               let confirmeHtml = "";
               const stLower = String(sejour.statut || "").toLowerCase();
               if (stLower.includes("confirm")) {
@@ -2099,7 +2033,7 @@
 
       mois.semaines.forEach(sem => {
         disposGuide[sem.code] = statut;
-        commentairesSemaines[sem.code] = "";
+        // CONSERVATION : On ne supprime pas les commentaires individuels de chaque semaine !
       });
 
       aDesModifications = true;
@@ -2386,10 +2320,17 @@
           else if (!s) nonRenseigneCount++;
         });
 
+        const listeCommsSemaines = mois.semaines.map(sem => (commentairesSemaines[sem.code] || "").trim());
+        const premierCom = listeCommsSemaines[0];
+        const tousLesCommsIdentiques = listeCommsSemaines.every(com => com === premierCom);
+
         const btnOccupe = document.getElementById(`btn-choice-occupe-${indexMois}`);
         const btnDispo = document.getElementById(`btn-choice-dispo-${indexMois}`);
 
-        if (nonRenseigneCount === totalSemaines) {
+        if (!tousLesCommsIdentiques) {
+          if (btnCustom) btnCustom.classList.add('selected-custom');
+          ouvrirDetailMois(indexMois);
+        } else if (nonRenseigneCount === totalSemaines) {
           document.getElementById(`detail-${indexMois}`).classList.remove('open');
         } else if (occupeCount === totalSemaines) {
           if (btnOccupe) btnOccupe.classList.add('selected-occupe');
@@ -2542,11 +2483,13 @@
             const statutSejourVal = row.statutSejour || row.etatSejour || row.etat || "";
 
             if (valSemaine) {
-              const semNormaliseeRow = cleanSem(valSemaine);
+              const codeSemaineRow = extraireCodeSemaine(valSemaine);
               
               structureMois.forEach(m => {
                 m.semaines.forEach(semStructure => {
-                  if (cleanSem(semStructure.code) === semNormaliseeRow) {
+                  const codeSemaineStructure = extraireCodeSemaine(semStructure.code);
+
+                  if (codeSemaineRow && codeSemaineRow === codeSemaineStructure) {
                     
                     if (sejourVal && sejourVal.trim() !== "") {
                       const estMultiple = sejourVal.includes(" / ");
@@ -2567,28 +2510,43 @@
 
                     if (comVal && comVal.trim() !== "") {
                       commentairesSemaines[semStructure.code] = comVal;
-                      commentairesMois[m.id] = comVal;
-                      commentairesValidesMois[m.id] = true;
-                      const txtArea = document.getElementById(`comment-${m.id}`);
-                      const box = document.getElementById(`comment-box-${m.id}`);
-                      const btnAction = document.getElementById(`btn-action-com-${m.id}`);
-                      const btnToggle = document.getElementById(`btn-toggle-com-${m.id}`);
-
-                      if (txtArea) {
-                        txtArea.value = comVal;
-                        txtArea.disabled = true;
-                      }
-                      if (btnAction) {
-                        btnAction.textContent = '✏️ Modifier';
-                        btnAction.disabled = false;
-                        btnAction.classList.add('validated-mode');
-                      }
-                      if (btnToggle) btnToggle.textContent = '🗑️ Supprimer ma remarque';
-                      if (box) box.classList.add('open');
                     }
                   }
                 });
               });
+            }
+          });
+
+          // Post-traitement : Regroupement sous le commentaire du mois si TOUS les commentaires d'un mois sont identiques et non vides
+          structureMois.forEach(m => {
+            const commsDuMois = m.semaines.map(sem => (commentairesSemaines[sem.code] || "").trim());
+            const premierComm = commsDuMois[0];
+            const tousIdentiquesEtNonVides = premierComm !== "" && commsDuMois.every(c => c === premierComm);
+
+            if (tousIdentiquesEtNonVides) {
+              commentairesMois[m.id] = premierComm;
+              commentairesValidesMois[m.id] = true;
+
+              m.semaines.forEach(sem => {
+                commentairesSemaines[sem.code] = "";
+              });
+
+              const txtArea = document.getElementById(`comment-${m.id}`);
+              const box = document.getElementById(`comment-box-${m.id}`);
+              const btnAction = document.getElementById(`btn-action-com-${m.id}`);
+              const btnToggle = document.getElementById(`btn-toggle-com-${m.id}`);
+
+              if (txtArea) {
+                txtArea.value = premierComm;
+                txtArea.disabled = true;
+              }
+              if (btnAction) {
+                btnAction.textContent = '✏️ Modifier';
+                btnAction.disabled = false;
+                btnAction.classList.add('validated-mode');
+              }
+              if (btnToggle) btnToggle.textContent = '🗑️ Supprimer ma remarque';
+              if (box) box.classList.add('open');
             }
           });
         }
@@ -2688,8 +2646,12 @@
           mois.semaines.forEach(sem => {
             if (!sejoursAgence[sem.code]) {
               const comSem = commentairesSemaines[sem.code] || "";
+              
+              // Sécurisation stricte du code de semaine envoyé au Google Sheet
+              const codeClean = extraireCodeSemaine(sem.code);
+
               payloadDispos.push({
-                semaine: sem.code,
+                semaine: codeClean ? codeClean : sem.code,
                 statut: disposGuide[sem.code] || "Disponible",
                 commentaire: comSem !== "" ? comSem : comMois
               });

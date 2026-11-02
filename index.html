@@ -298,6 +298,21 @@
       font-weight: 600;
       color: var(--primary);
       margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .badge-a-confirmer-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #c2410c;
+      background-color: #fff7ed;
+      border: 1px solid #ffedd5;
+      padding: 3px 8px;
+      border-radius: 6px;
+      display: inline-block;
     }
 
     .summary-section-subtitle {
@@ -408,6 +423,27 @@
       border-top: 1px dashed #bfdbfe;
       display: flex;
       flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .sejours-subgroup-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sejours-subgroup-title.demande { color: #c2410c; }
+    .sejours-subgroup-title.confirme { color: #15803d; }
+
+    .sejours-group-box {
+      display: flex;
+      flex-direction: column;
       gap: 6px;
       width: 100%;
     }
@@ -417,26 +453,38 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      gap: 12px;
       background: #ffffff;
-      padding: 8px 10px;
-      border-radius: 6px;
+      padding: 10px 12px;
+      border-radius: 8px;
       border: 1px solid #dbeafe;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       width: 100%;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    }
+
+    .sejour-item-recap.demande-card {
+      border-color: #ffedd5;
+      background: #fffcf8;
     }
 
     .sejour-item-recap .sejour-nom-text {
       color: var(--primary);
       font-weight: 600;
       word-break: break-word;
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .sejour-details-pills {
       display: flex;
       align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
+      gap: 8px;
+      flex-shrink: 0;
+      margin-left: auto;
     }
 
     .sejour-date-tag {
@@ -452,20 +500,47 @@
       border: 1px solid #bbf7d0;
       font-size: 0.68rem;
       font-weight: 700;
-      padding: 1px 6px;
-      border-radius: 4px;
+      padding: 2px 8px;
+      border-radius: 6px;
       white-space: nowrap;
+      flex-shrink: 0;
     }
 
-    .badge-inscrits-pax {
-      background-color: #f1f5f9;
-      color: #334155;
-      border: 1px solid #cbd5e1;
-      font-size: 0.68rem;
-      font-weight: 600;
-      padding: 1px 6px;
-      border-radius: 4px;
+    .btn-repondre-sejour {
+      background-color: #ea580c;
+      color: #ffffff;
+      border: none;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
       white-space: nowrap;
+      transition: all 0.15s ease;
+      box-shadow: 0 1px 3px rgba(234, 88, 12, 0.3);
+    }
+
+    .btn-repondre-sejour:hover {
+      background-color: #c2410c;
+      transform: translateY(-1px);
+    }
+
+    .btn-detail-sejour {
+      background-color: #f1f5f9;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .btn-detail-sejour:hover {
+      background-color: #e2e8f0;
+      color: #0f172a;
     }
 
     .btn-espace-azimut {
@@ -507,12 +582,6 @@
       cursor: pointer;
       margin-bottom: 20px;
       transition: all 0.2s ease;
-    }
-
-    .btn-start:disabled {
-      background-color: #cbd5e1 !important;
-      color: #64748b !important;
-      cursor: not-allowed !important;
     }
 
     .status-banner {
@@ -689,7 +758,7 @@
       width: 100%;
     }
 
-    .week-card.disponible { background: var(--dispo-bg); border-color: #bbf7d0; }
+    .week-card.disponibles { background: var(--dispo-bg); border-color: #bbf7d0; }
     .week-card.occupe { background: var(--occupe-bg); border-color: #fecaca; }
     .week-card.option { background: var(--option-bg); border-color: #fef3c7; }
     .week-card.sejour-engagé { 
@@ -787,7 +856,7 @@
       text-align: center;
     }
 
-    .week-card.disponible .opt-btn[data-type="Disponible"] { background: var(--dispo-border); color: #ffffff; }
+    .week-card.disponibles .opt-btn[data-type="Disponible"] { background: var(--dispo-border); color: #ffffff; }
     .week-card.occupe .opt-btn[data-type="Occupé"] { background: var(--occupe-border); color: #ffffff; }
     .week-card.option .opt-btn[data-type="Option"] { background: var(--option-border); color: #ffffff; }
 
@@ -1185,6 +1254,53 @@
       border-color: #334155 !important;
     }
 
+    /* MODALE DETAIL ET CONFIRMATION SÉJOUR */
+    .modal-confirm-icon {
+      width: 54px;
+      height: 54px;
+      background-color: #e0f2fe;
+      color: #0284c7;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px auto;
+      font-size: 1.5rem;
+      border: 1px solid #bae6fd;
+    }
+
+    .modal-sejour-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 14px;
+      margin: 14px 0;
+      text-align: left;
+    }
+
+    .detail-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      padding: 4px 0;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .detail-item-row:last-child {
+      border-bottom: none;
+    }
+
+    .detail-item-label {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .detail-item-val {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
     @media (max-width: 576px) {
       body { padding: 12px 8px 75px 8px !important; }
       header {
@@ -1221,6 +1337,59 @@
   </style>
 </head>
 <body>
+
+  <!-- MODAL DE CONFIRMATION SÉJOUR PAR LE GUIDE -->
+  <div class="modal fade" id="confirmSejourModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
+        <div class="modal-body p-4 text-center">
+          <div class="modal-confirm-icon">⛷️</div>
+          <h6 class="fw-bold text-dark mb-1 fs-6">Détail du séjour</h6>
+          <p id="modal-sejour-subtext" class="text-secondary small mb-2" style="line-height: 1.45; font-size: 0.82rem;">
+            Si tu es bien dispo pour ce séjour, confirme-nous !
+          </p>
+
+          <div class="modal-sejour-card">
+            <div id="modal-sejour-nom" class="fw-bold text-dark mb-2" style="font-size: 0.9rem;">-</div>
+            
+            <div class="detail-item-row">
+              <span class="detail-item-label">Dates :</span>
+              <span id="modal-sejour-date" class="detail-item-val">-</span>
+            </div>
+            
+            <div class="detail-item-row">
+              <span class="detail-item-label">Durée :</span>
+              <span id="modal-sejour-duree" class="detail-item-val">-</span>
+            </div>
+
+            <div class="detail-item-row">
+              <span class="detail-item-label">Participants :</span>
+              <span id="modal-sejour-pax" class="detail-item-val">-</span>
+            </div>
+
+            <div id="modal-sejour-statut-row" class="detail-item-row" style="display: none;">
+              <span class="detail-item-label">Statut :</span>
+              <span id="modal-sejour-statut-val" class="detail-item-val text-success">🟢 Voyage assuré</span>
+            </div>
+          </div>
+
+          <!-- BOUTONS D'ACTION (S'AFFICHERONT UNIQUEMENT SI LE SÉJOUR N'EST PAS ENCORE ATTRIBUÉ) -->
+          <div id="modal-sejour-actions" class="d-flex flex-column gap-2 mt-3">
+            <button type="button" id="btn-valider-confirmation-modal" class="btn btn-success btn-sm w-100 py-2 rounded-3 fw-bold shadow-sm">
+              Oui, dispo pour ce séjour ✓
+            </button>
+            <button type="button" id="btn-refuser-modal" class="btn btn-outline-danger btn-sm w-100 py-2 rounded-3 fw-semibold">
+              Refuser le séjour ✕
+            </button>
+          </div>
+
+          <button type="button" class="btn btn-link btn-sm text-secondary text-decoration-none mt-2" data-bs-dismiss="modal">
+            Fermer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- MODAL FIN DE SAISIE -->
   <div class="modal fade" id="confirmationEndModal" tabindex="-1" aria-hidden="true">
@@ -1260,7 +1429,7 @@
 
   <div id="loading-overlay" class="loading-overlay">
     <div class="spinner"></div>
-    <div style="font-weight: 600; font-size: 1rem;">Enregistrement de tes disponibilités...</div>
+    <div style="font-weight: 600; font-size: 1rem;">Mise à jour en cours...</div>
     <div style="font-size: 0.8rem; opacity: 0.8; margin-top: 4px;">Merci de patienter quelques instants</div>
   </div>
 
@@ -1286,10 +1455,8 @@
       <div class="inline-loader-text">Chargement des données...</div>
     </div>
 
-    <!-- BANNIÈRE DE MESSAGE DE CONFIRMATION / INFORMATION (PLACÉE AU DESSUS DU RÉCAPITULATIF) -->
     <div id="banner" class="status-banner"></div>
 
-    <!-- CARTE D'ACCUEIL INTRODUCTIVE -->
     <div id="welcome-notice" class="welcome-notice" style="display: none;">
       <p id="welcome-text-short">Hello ✌️ Cet outil te permet de renseigner tes dispos pour la saison avec Azimut.</p>
       
@@ -1303,7 +1470,6 @@
       </button>
     </div>
 
-    <!-- CARTE DÉDIÉE PROFIL -->
     <div id="inline-profile-card" class="inline-profile-card">
       <h6 class="fw-bold text-dark mb-3">📋 2-3 questions pour commencer</h6>
       <div id="profile-questions-container">
@@ -1365,23 +1531,25 @@
       </div>
     </div>
 
-    <!-- BOUTON D'ACTION PRINCIPAL ("C'EST PARTI") -->
     <button id="start-btn" class="btn-start" onclick="clicCestParti()">
       🚀 C'est parti !
     </button>
 
-    <!-- BLOC RÉCAPITULATIF -->
+    <!-- BLOC RÉCAPITULATIF SAISON -->
     <div id="summary-section" class="summary-box">
-      <div class="summary-title">Récapitulatif de ta saison</div>
+      <div class="summary-title">
+        <span>Récapitulatif de ta saison</span>
+      </div>
 
       <div class="summary-container">
         <div id="summary-top" class="summary-grid-top">
           <div class="summary-card sejour">
             <div class="sejour-header-count">
-              <div class="sejour-title-left">
-                <div id="count-sejour" class="summary-count">0</div>
-                <div class="summary-label">Séjours attribués par Azimut</div>
-              </div>
+<div class="sejour-title-left">
+  <div id="count-sejour" class="summary-count">0</div>
+  <div class="summary-label">Séjours prévus avec Azimut</div>
+  <span id="badge-a-confirmer-title" class="badge-a-confirmer-title" style="display: none;"></span>
+</div>
               <button id="btn-toggle-sejours-list" class="btn-toggle-sejours" onclick="toggleListeSejoursRecap()">
                 <span>Afficher le détail</span>
                 <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
@@ -1417,12 +1585,10 @@
       </div>
     </div>
 
-    <!-- BOUTON DE REPLIEMENT DES DISPOS -->
     <button id="btn-toggle-dispos-block" class="btn-toggle-dispos-block" onclick="toggleBlocDisposFull()">
       ✏️ Voir ou modifier mes dispos
     </button>
 
-    <!-- ENVELOPPE CONTENANT LE DETAIL ET LE BOUTON D'ENREGISTREMENT -->
     <div id="dispos-full-wrapper">
       <div id="section-dispos-title" class="section-dispos-title">
         📅 Tes dispos mois par mois
@@ -1485,6 +1651,8 @@
     let aEteAvertiSauvegarde = false;
     let modalConfirmationEndInstance = null;
     let modalProfileInstance = null;
+    let modalConfirmSejourInstance = null;
+    let sejourAConfirmerTemp = null;
     let ecouteurPremierClicPostPopin = false;
     let timerBulleIncomplet = null;
     let estBoutonSauvegardePret = false;
@@ -1497,6 +1665,15 @@
       return match ? match[0].toUpperCase() : '';
     };
 
+    const formaterPlageDates = (dateDepart, dateFin, moisNom) => {
+      if (dateDepart && dateFin) {
+        return `${dateDepart} - ${dateFin}`;
+      } else if (dateDepart) {
+        return dateDepart;
+      }
+      return moisNom || '';
+    };
+
     document.addEventListener("DOMContentLoaded", () => {
       const modalEndEl = document.getElementById('confirmationEndModal');
       if (modalEndEl && window.bootstrap) {
@@ -1507,6 +1684,14 @@
       if (modalProfileEl && window.bootstrap) {
         modalProfileInstance = new bootstrap.Modal(modalProfileEl);
       }
+
+      const modalConfirmEl = document.getElementById('confirmSejourModal');
+      if (modalConfirmEl && window.bootstrap) {
+        modalConfirmSejourInstance = new bootstrap.Modal(modalConfirmEl);
+      }
+
+      document.getElementById('btn-valider-confirmation-modal')?.addEventListener('click', () => traiterActionSejour("confirmer"));
+      document.getElementById('btn-refuser-modal')?.addEventListener('click', () => traiterActionSejour("refuser"));
 
       document.querySelectorAll('.profile-q').forEach(input => {
         input.addEventListener('change', () => {
@@ -1692,12 +1877,17 @@
         btnToggle.classList.remove('open');
         btnEspace.style.display = 'none';
       }
+      
+      actualiserRecap();
     }
 
     function estMoisCompletementRenseigne(indexMois) {
       const mois = structureMois[indexMois];
       return mois.semaines.every(sem => {
-        return sejoursAgence[sem.code] || (disposGuide[sem.code] !== null && disposGuide[sem.code] !== undefined);
+        const sej = sejoursAgence[sem.code];
+        const stGuideLower = sej ? String(sej.statutGuide || "").toLowerCase() : "";
+        const estRefuse = stGuideLower.includes("refusé") || stGuideLower.includes("refuse");
+        return (sej && !estRefuse) || (disposGuide[sem.code] !== null && disposGuide[sem.code] !== undefined);
       });
     }
 
@@ -1745,8 +1935,12 @@
       let dispoCount = 0, occupeCount = 0, optionCount = 0, sejourCount = 0, nonRenseigneCount = 0;
       
       m.semaines.forEach(sem => {
-        if (sejoursAgence[sem.code]) {
-          const countS = sejoursAgence[sem.code].nbSejours || 1;
+        const sej = sejoursAgence[sem.code];
+        const stGuideLower = sej ? String(sej.statutGuide || "").toLowerCase() : "";
+        const estRefuse = stGuideLower.includes("refusé") || stGuideLower.includes("refuse");
+
+        if (sej && !estRefuse) {
+          const countS = sej.nbSejours || 1;
           sejourCount += countS;
         } else {
           const st = disposGuide[sem.code];
@@ -1790,7 +1984,6 @@
       if (aDesDonneesEnregistrees) {
         btn.style.display = 'block';
 
-        // Si un mois est réouvert et en cours d'édition
         if (moisOuvertEnEdition !== null) {
           estBoutonSauvegardePret = false;
           btn.className = "btn-save btn-disabled";
@@ -1823,12 +2016,123 @@
       }
     }
 
+function ouvrirPopinDetailSejour(semCode, estDuBlocAttribue = false) {
+  const sejour = sejoursAgence[semCode];
+  if (!sejour) return;
+
+  sejourAConfirmerTemp = { semCode, ...sejour };
+
+  document.getElementById('modal-sejour-nom').textContent = sejour.nom || "Séjour sans nom";
+  
+  // Affichage des dates brutes uniquement
+  const plageDates = formaterPlageDates(sejour.date, sejour.dateFin, "");
+  document.getElementById('modal-sejour-date').textContent = plageDates ? plageDates : "À préciser";
+
+  document.getElementById('modal-sejour-duree').textContent = sejour.duree ? `${sejour.duree} jours` : "6 jours";
+  
+  if (sejour.inscrits !== undefined && sejour.paxMax !== undefined) {
+    document.getElementById('modal-sejour-pax').textContent = `${sejour.inscrits} / ${sejour.paxMax} inscrits`;
+  } else {
+    document.getElementById('modal-sejour-pax').textContent = "Non précisé";
+  }
+
+  const stGuideLower = String(sejour.statutGuide || "").toLowerCase();
+  
+  const estAttribue = estDuBlocAttribue === true || 
+                      stGuideLower.includes("attribué") || 
+                      stGuideLower.includes("attribue") ||
+                      stGuideLower === "occupé";
+
+  const stSejourLower = String(sejour.statut || "").toLowerCase();
+  const estConfirmeSheet = stSejourLower.includes("confirmé") || stSejourLower === "ok";
+
+  const actionsDiv = document.getElementById('modal-sejour-actions');
+  const subtext = document.getElementById('modal-sejour-subtext');
+  const statutRow = document.getElementById('modal-sejour-statut-row');
+
+  if (estAttribue) {
+    if (actionsDiv) actionsDiv.style.setProperty('display', 'none', 'important');
+    if (subtext) subtext.style.setProperty('display', 'none', 'important');
+  } else {
+    if (actionsDiv) actionsDiv.style.setProperty('display', 'flex', 'important');
+    if (subtext) subtext.style.setProperty('display', 'block', 'important');
+  }
+
+  if (estConfirmeSheet) {
+    document.getElementById('modal-sejour-statut-val').textContent = "🟢 Voyage assuré";
+    if (statutRow) statutRow.style.display = 'flex';
+  } else {
+    if (statutRow) statutRow.style.display = 'none';
+  }
+
+  if (modalConfirmSejourInstance) {
+    modalConfirmSejourInstance.show();
+  }
+}
+
+    async function traiterActionSejour(typeAction) {
+      if (!sejourAConfirmerTemp) return;
+
+      const { semCode, idSejour, nom } = sejourAConfirmerTemp;
+      
+      if (modalConfirmSejourInstance) modalConfirmSejourInstance.hide();
+      
+      const overlay = document.getElementById('loading-overlay');
+      if (overlay) overlay.classList.add('active');
+
+      try {
+        const nouveauStatutGuide = (typeAction === "confirmer") ? "Attribué" : "Refusé";
+
+        if (sejoursAgence[semCode]) {
+          sejoursAgence[semCode].statutGuide = nouveauStatutGuide;
+        }
+
+        if (typeAction === "refuser") {
+          disposGuide[semCode] = "Occupé";
+        }
+
+        actualiserRecap();
+
+        const payload = {
+          action: typeAction === "confirmer" ? "confirmSejourGuide" : "refuseSejourGuide",
+          token: guideTokenParam,
+          semaine: semCode,
+          idSejour: idSejour,
+          nomSejour: nom,
+          statut: nouveauStatutGuide
+        };
+
+        await fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+
+        if (overlay) overlay.classList.remove('active');
+        
+        if (typeAction === "confirmer") {
+          afficherMessage(`✓ Séjour "${nom}" confirmé avec succès !\nNous l'ajouterons sur ton espace du site Azimut très prochainement.`, "success");
+        } else {
+          afficherMessage(`✓ Refus du séjour pris en compte (nous l'avons supprimé de ton planning).`, "success");
+        }
+      } catch (err) {
+        console.error("Erreur action séjour :", err);
+        if (overlay) overlay.classList.remove('active');
+        afficherMessage("Erreur réseau lors de la mise à jour.", "error");
+      }
+    }
+
     function actualiserRecap() {
       let nbrDispo = 0, nbrOccupe = 0, nbrOption = 0, nbrSejour = 0;
 
       Object.keys(disposGuide).forEach(semCode => {
-        if (sejoursAgence[semCode]) {
-          nbrSejour += sejoursAgence[semCode].nbSejours || 1;
+        const sejour = sejoursAgence[semCode];
+        const stGuideLower = sejour ? String(sejour.statutGuide || "").toLowerCase() : "";
+        const estRefuse = stGuideLower.includes("refusé") || stGuideLower.includes("refuse");
+
+        if (sejour && !estRefuse) {
+          nbrSejour += sejour.nbSejours || 1;
         } else {
           const statut = disposGuide[semCode];
           if (aDesDonneesEnregistrees) {
@@ -1851,11 +2155,11 @@
       const welcomeNotice = document.getElementById('welcome-notice');
       const welcomeMore = document.getElementById('welcome-more-content');
       const btnToggleWelcome = document.getElementById('btn-toggle-welcome');
-      const btnLabelWelcome = document.getElementById('label-toggle-welcome');
       const sejoursListContainer = document.getElementById('sejours-list-container');
       const btnEspaceAzimut = document.getElementById('btn-espace-azimut-guide');
       const startBtn = document.getElementById('start-btn');
       const btnToggleDisposBlock = document.getElementById('btn-toggle-dispos-block');
+      const badgeTitleAConfirmer = document.getElementById('badge-a-confirmer-title');
 
       if (!aDesDonneesEnregistrees) {
         welcomeNotice.style.display = 'block';
@@ -1874,13 +2178,10 @@
           }
         }
       } else {
-        // RECONNEXION : Masquage total de la notice d'accueil ("Hello...")
         welcomeNotice.style.display = 'none';
-
         summaryBox.style.display = 'block';
         bottomRow.style.display = 'grid';
         disposSubtitle.style.display = 'block';
-
         if (btnToggleDisposBlock) btnToggleDisposBlock.style.display = 'block';
       }
 
@@ -1888,42 +2189,106 @@
         topRow.style.display = 'block';
         sejoursListContainer.innerHTML = '';
 
+        const sejoursDemande = [];
+        const sejoursAttribue = [];
+
         structureMois.forEach(m => {
           m.semaines.forEach(sem => {
             const sejour = sejoursAgence[sem.code];
             if (sejour) {
-              const item = document.createElement('div');
-              item.className = 'sejour-item-recap';
+              const stGuideLower = String(sejour.statutGuide || "").toLowerCase();
+              const estRefuse = stGuideLower.includes("refusé") || stGuideLower.includes("refuse");
 
-              const dateAffichage = sejour.date ? `Départ : ${sejour.date}` : `${m.nom} (${sem.code.split(' ')[0]})`;
-              
-              let paxHtml = "";
-              if (sejour.inscrits !== undefined && sejour.paxMax !== undefined) {
-                paxHtml = `<span class="badge-inscrits-pax">👥 ${sejour.inscrits}/${sejour.paxMax} pax</span>`;
+              if (!estRefuse) {
+                const estAttribueGuide = stGuideLower.includes("attribué") || stGuideLower.includes("attribue");
+                const stSejourLower = String(sejour.statut || "").toLowerCase();
+                const estConfirmeSejourSheet = stSejourLower.includes("confirmé") || stSejourLower === "ok";
+
+                if (estAttribueGuide) {
+                  sejoursAttribue.push({ semCode: sem.code, moisNom: m.nom, estConfirmeSejourSheet, ...sejour });
+                } else {
+                  sejoursDemande.push({ semCode: sem.code, moisNom: m.nom, estConfirmeSejourSheet, ...sejour });
+                }
               }
-
-              let confirmeHtml = "";
-              const stLower = String(sejour.statut || "").toLowerCase();
-              if (stLower.includes("confirm")) {
-                confirmeHtml = `<span class="badge-statut-confirme">🟢 Confirmé</span>`;
-              }
-
-              item.innerHTML = `
-                <div class="sejour-nom-text">${sejour.nom}</div>
-                <div class="sejour-details-pills">
-                  ${confirmeHtml}
-                  ${paxHtml}
-                  <div class="sejour-date-tag">${dateAffichage}</div>
-                </div>
-              `;
-              sejoursListContainer.appendChild(item);
             }
           });
         });
 
+        // Gestion de l'affichage de la mention "X à confirmer" à droite du titre
+        const nbrAConfirmer = sejoursDemande.length;
+        const estDesactiveDetail = (sejoursListContainer.style.display === 'none' || sejoursListContainer.style.display === '');
+
+        if (nbrAConfirmer > 0 && estDesactiveDetail) {
+          if (badgeTitleAConfirmer) {
+            badgeTitleAConfirmer.textContent = `${nbrAConfirmer} à confirmer`;
+            badgeTitleAConfirmer.style.display = 'inline-block';
+          }
+        } else {
+          if (badgeTitleAConfirmer) {
+            badgeTitleAConfirmer.style.display = 'none';
+          }
+        }
+
+// 1. SÉJOURS EN DEMANDE (Bouton Orange "Répondre")
+        if (sejoursDemande.length > 0) {
+          const groupDemande = document.createElement('div');
+          groupDemande.className = 'sejours-group-box';
+          groupDemande.innerHTML = `<div class="sejours-subgroup-title demande">🟠 En attente de ta confirmation (${sejoursDemande.length})</div>`;
+
+          sejoursDemande.forEach(sej => {
+            const item = document.createElement('div');
+            item.className = 'sejour-item-recap demande-card';
+            const dateAffichage = formaterPlageDates(sej.date, sej.dateFin, sej.moisNom);
+            const badgeConfirme = sej.estConfirmeSejourSheet ? `<span class="badge-statut-confirme">🟢 Voyage assuré</span>` : ``;
+
+            item.innerHTML = `
+              <div class="sejour-nom-text">
+                <span>${sej.nom}</span>
+                ${badgeConfirme}
+              </div>
+              <div class="sejour-details-pills">
+                <div class="sejour-date-tag">${dateAffichage}</div>
+                <button class="btn-repondre-sejour" onclick="ouvrirPopinDetailSejour('${sej.semCode}', false)">Répondre</button>
+              </div>
+            `;
+            groupDemande.appendChild(item);
+          });
+
+          sejoursListContainer.appendChild(groupDemande);
+        }
+
+        // 2. SÉJOURS ATTRIBUÉS (Bouton discret "Voir détail")
+        if (sejoursAttribue.length > 0) {
+          const groupAttrib = document.createElement('div');
+          groupAttrib.className = 'sejours-group-box';
+          groupAttrib.innerHTML = `<div class="sejours-subgroup-title confirme">🟢 Séjours attribués (${sejoursAttribue.length})</div>`;
+
+          sejoursAttribue.forEach(sej => {
+            const item = document.createElement('div');
+            item.className = 'sejour-item-recap';
+            const dateAffichage = formaterPlageDates(sej.date, sej.dateFin, sej.moisNom);
+            const badgeConfirme = sej.estConfirmeSejourSheet ? `<span class="badge-statut-confirme">🟢 Voyage assuré</span>` : ``;
+
+            item.innerHTML = `
+              <div class="sejour-nom-text">
+                <span>${sej.nom}</span>
+                ${badgeConfirme}
+              </div>
+              <div class="sejour-details-pills">
+                <div class="sejour-date-tag">${dateAffichage}</div>
+                <button class="btn-detail-sejour" onclick="ouvrirPopinDetailSejour('${sej.semCode}', true)">Voir détail</button>
+              </div>
+            `;
+            groupAttrib.appendChild(item);
+          });
+
+          sejoursListContainer.appendChild(groupAttrib);
+        }
+
       } else {
         topRow.style.display = 'none';
         btnEspaceAzimut.style.display = 'none';
+        if (badgeTitleAConfirmer) badgeTitleAConfirmer.style.display = 'none';
       }
     }
 
@@ -2089,7 +2454,11 @@
     function choixGlobalMois(indexMois, statut) {
       const mois = structureMois[indexMois];
       
-      const aUnSejour = mois.semaines.some(sem => sejoursAgence[sem.code]);
+      const aUnSejour = mois.semaines.some(sem => {
+        const sej = sejoursAgence[sem.code];
+        const stG = sej ? String(sej.statutGuide || "").toLowerCase() : "";
+        return sej && !stG.includes("refusé") && !stG.includes("refuse");
+      });
       if (aUnSejour) return;
 
       mois.semaines.forEach(sem => {
@@ -2160,12 +2529,17 @@
 
       mois.semaines.forEach(sem => {
         const sejour = sejoursAgence[sem.code];
+        const stGuideLower = sejour ? String(sejour.statutGuide || "").toLowerCase() : "";
+        const estRefuse = stGuideLower.includes("refusé") || stGuideLower.includes("refuse");
+
         const div = document.createElement('div');
 
-        if (sejour) {
+        if (sejour && !estRefuse) {
           div.className = `week-card sejour-engagé`;
           
-          const mentionDate = sejour.date ? ` (${sejour.date})` : '';
+          const plageDates = formaterPlageDates(sejour.date, sejour.dateFin, "");
+          const mentionDate = plageDates ? ` (${plageDates})` : '';
+
           const labelSejourPrincipal = sejour.nbSejours > 1 
             ? `🔒 ${sejour.nbSejours} séjours attribués${mentionDate}`
             : `🔒 1 séjour attribué${mentionDate}`;
@@ -2210,7 +2584,10 @@
     }
 
     function setSemaineStatut(semaineCode, statut, indexMois) {
-      if (sejoursAgence[semaineCode]) return;
+      const sejour = sejoursAgence[semaineCode];
+      const stGuideLower = sejour ? String(sejour.statutGuide || "").toLowerCase() : "";
+      if (sejour && !stGuideLower.includes("refusé") && !stGuideLower.includes("refuse")) return;
+
       disposGuide[semaineCode] = statut;
       aDesModifications = true;
       renderGridSemaines(indexMois);
@@ -2350,7 +2727,11 @@
 
     function configurerBoutonsGlobauxMois(indexMois) {
       const mois = structureMois[indexMois];
-      const aUnSejour = mois.semaines.some(sem => sejoursAgence[sem.code]);
+      const aUnSejour = mois.semaines.some(sem => {
+        const sej = sejoursAgence[sem.code];
+        const stG = sej ? String(sej.statutGuide || "").toLowerCase() : "";
+        return sej && !stG.includes("refusé") && !stG.includes("refuse");
+      });
 
       const choicesTopContainer = document.getElementById(`month-choices-top-${indexMois}`);
       const choicesBottomContainer = document.getElementById(`month-choices-bottom-${indexMois}`);
@@ -2536,11 +2917,15 @@
             const valStatut = row.statut;
             
             const sejourVal = row.nomSejour || row.idSejour || row.sejour || "";
+            const idSejourVal = row.idSejour || "";
             const dateDepartVal = row.dateDepart || "";
+            const dateFinVal = row.dateFin || "";
+            const dureeVal = row.duree || "";
             const comVal = row.commentaire || "";
             const inscritsVal = row.inscritsReel !== undefined ? row.inscritsReel : (row.inscrits !== undefined ? row.inscrits : undefined);
             const paxMaxVal = row.paxMax !== undefined ? row.paxMax : undefined;
             const statutSejourVal = row.statutSejour || row.etatSejour || row.etat || "";
+            const statutGuideVal = row.statutGuide || row.statut || "";
 
             if (valSemaine) {
               const codeSemaineRow = extraireCodeSemaine(valSemaine);
@@ -2557,11 +2942,15 @@
 
                       sejoursAgence[semStructure.code] = {
                         nom: sejourVal,
+                        idSejour: idSejourVal,
                         date: dateDepartVal,
+                        dateFin: dateFinVal,
+                        duree: dureeVal,
                         nbSejours: nbSejours,
                         inscrits: inscritsVal,
                         paxMax: paxMaxVal,
-                        statut: statutSejourVal
+                        statut: statutSejourVal,
+                        statutGuide: statutGuideVal
                       };
                     } else if (valStatut) {
                       disposGuide[semStructure.code] = valStatut;
@@ -2624,7 +3013,6 @@
           actualiserRecap();
           afficherMessage("ℹ️ Tes disponibilités enregistrées ont été chargées. Tu peux les modifier et valider tes changements à tout moment.", "success");
           
-          // MASQUAGE DU BLOC DE DISPOS AU CHARGEMENT INITIAL
           document.getElementById('dispos-full-wrapper').style.display = 'none';
         } else {
           aDesDonneesEnregistrees = false;
@@ -2690,7 +3078,6 @@
       });
     }
 
-    // ENREGISTREMENT VIA GOOGLE APPS SCRIPT
     async function enregistrerDispos() {
       const btn = document.getElementById('save-btn');
       const overlay = document.getElementById('loading-overlay');
@@ -2707,7 +3094,11 @@
           const comMois = commentairesMois[mois.id] || "";
 
           mois.semaines.forEach(sem => {
-            if (!sejoursAgence[sem.code]) {
+            const sejour = sejoursAgence[sem.code];
+            const stGuideLower = sejour ? String(sejour.statutGuide || "").toLowerCase() : "";
+            const estRefuse = stGuideLower.includes("refusé") || stGuideLower.includes("refuse");
+
+            if (!sejour || estRefuse) {
               const comSem = commentairesSemaines[sem.code] || "";
               const codeClean = extraireCodeSemaine(sem.code);
 
@@ -2740,7 +3131,6 @@
 
         actualiserRecap();
 
-        // MASQUAGE DU BLOC APRÈS ENREGISTREMENT RÉUSSI
         document.getElementById('dispos-full-wrapper').style.display = 'none';
         
         btn.className = "btn-save success-state";

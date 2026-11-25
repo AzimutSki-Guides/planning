@@ -433,6 +433,18 @@ h1 {
 .sejours-subgroup-title.confirme { color: #15803d; }
 .sejours-subgroup-title.refuse { color: #dc2626; margin-top: 4px; }
 
+
+.refuse-toggle-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #991b1b;
+  background: #ffffff;
+  border: 1px solid #fca5a5;
+  border-radius: 5px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
 .sejours-group-box {
   display: flex;
   flex-direction: column;
@@ -461,8 +473,104 @@ h1 {
 }
 
 .sejour-item-recap.refuse-card {
-  border-color: #fca5a5;
-  background: #fef2f2;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  box-shadow: none;
+}
+
+.refuse-nom-text {
+  color: #475569 !important;
+  flex-wrap: wrap;
+}
+
+.refuse-badges-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.mention-motif-statut {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+  position: relative;
+  background: none;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+.mention-motif-guide {
+  color: #b91c1c;
+}
+
+.mention-motif-azimut {
+  color: #9f1239;
+}
+
+.mention-motif-statut .info-bubble-trigger {
+  cursor: pointer;
+  margin-left: 3px;
+  width: 14px;
+  height: 14px;
+  font-size: 0.62rem;
+  font-weight: 600;
+  background-color: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+  box-shadow: none;
+}
+
+.mention-motif-statut .info-bubble-trigger:hover,
+.mention-motif-statut .info-bubble-trigger.is-open {
+  background-color: #e2e8f0;
+  color: #334155;
+  border-color: #94a3b8;
+}
+
+.mention-motif-statut .info-bubble-trigger:hover::after,
+.mention-motif-statut .info-bubble-trigger.is-open::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 135%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--primary);
+  color: #ffffff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 400;
+  line-height: 1.35;
+  white-space: normal;
+  width: 220px;
+  max-width: 80vw;
+  text-align: center;
+  z-index: 120;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
+
+.mention-motif-statut .info-bubble-trigger:hover::before,
+.mention-motif-statut .info-bubble-trigger.is-open::before {
+  content: '';
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--primary) transparent transparent transparent;
+  z-index: 121;
+  pointer-events: none;
+}
+
+.refuse-date-tag {
+  color: #64748b !important;
 }
 
 .sejour-item-recap .sejour-nom-text {

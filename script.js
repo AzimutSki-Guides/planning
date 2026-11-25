@@ -67,6 +67,20 @@ const formaterPlageDates = (dateDepart, dateFin, moisNom) => {
   return moisNom || '';
 };
 
+const estSejourAnnuleAzimut = (sejour) => {
+  const stSejourLower = sejour ? String(sejour.statut || "").toLowerCase() : "";
+  return stSejourLower.includes("annul");
+};
+
+const estSejourRefuseGuide = (sejour) => {
+  const stGuideLower = sejour ? String(sejour.statutGuide || "").toLowerCase() : "";
+  return stGuideLower.includes("refusé") || stGuideLower.includes("refuse");
+};
+
+const estSejourEcarteFormulaire = (sejour) => {
+  return estSejourAnnuleAzimut(sejour) || estSejourRefuseGuide(sejour);
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   const modalEndEl = document.getElementById('confirmationEndModal');
   if (modalEndEl && window.bootstrap) {
@@ -107,6 +121,22 @@ function initApp() {
   renderMonthsHTML();
   chargerDonneesGoogleSheets();
 }
+
+document.addEventListener("click", (e) => {
+  const trigger = e.target.closest(".mention-motif-statut .info-bubble-trigger");
+  if (trigger) {
+    e.stopPropagation();
+    const alreadyOpen = trigger.classList.contains("is-open");
+    document.querySelectorAll(".mention-motif-statut .info-bubble-trigger.is-open")
+      .forEach(el => el.classList.remove("is-open"));
+    if (!alreadyOpen) {
+      trigger.classList.add("is-open");
+    }
+    return;
+  }
+  document.querySelectorAll(".mention-motif-statut .info-bubble-trigger.is-open")
+    .forEach(el => el.classList.remove("is-open"));
+});
 
 function toggleBlocDisposFull() {
   const wrapper = document.getElementById('dispos-full-wrapper');
@@ -292,9 +322,8 @@ function estMoisCompletementRenseigne(indexMois) {
   const mois = structureMois[indexMois];
   return mois.semaines.every(sem => {
     const sej = sejoursAgence[sem.code];
-    const stGuideLower = sej ? String(sej.statutGuide || "").toLowerCase() : "";
-    const estRefuse = stGuideLower.includes("refusé") || stGuideLower.includes("refuse");
-    return (sej && !estRefuse) || (disposGuide[sem.code] !== null && disposGuide[sem.code] !== undefined);
+    const estEcarte = estSejourEcarteFormulaire(sej);
+    return (sej && !estEcarte) || (disposGuide[sem.code] !== null && disposGuide[sem.code] !== undefined);
   });
 }
 
@@ -343,10 +372,9 @@ function genererTexteBadgeMois(m) {
   
   m.semaines.forEach(sem => {
     const sej = sejoursAgence[sem.code];
-    const stGuideLower = sej ? String(sej.statutGuide || "").toLowerCase() : "";
-    const estRefuse = stGuideLower.includes("refusé") || stGuideLower.includes("refuse");
+    const estEcarte = estSejourEcarteFormulaire(sej);
 
-    if (sej && !estRefuse) {
+    if (sej && !estEcarte) {
       const countS = sej.nbSejours || 1;
       sejourCount += countS;
     } else {
@@ -556,17 +584,16 @@ function actualiserRecap() {
 
   Object.keys(disposGuide).forEach(semCode => {
     const sejour = sejoursAgence[semCode];
-    const stGuideLower = sejour ? String(sejour.statutGuide || "").toLowerCase() : "";
-    const estRefuse = stGuideLower.includes("refusé") || stGuideLower.includes("refuse");
+    const estEcarte = estSejourEcarteFormulaire(sejour);
 
     if (sejour) {
       totalSejoursVisibles += sejour.nbSejours || 1;
-      if (!estRefuse) {
+      if (!estEcarte) {
         nbrSejour += sejour.nbSejours || 1;
       }
     }
     
-    if (!sejour || estRefuse) {
+    if (!sejour || estEcarte) {
       const statut = disposGuide[semCode];
       if (aDesDonneesEnregistrees) {
         if (statut === "Disponible") nbrDispo++;
@@ -630,14 +657,22 @@ function actualiserRecap() {
       m.semaines.forEach(sem => {
         const sejour = sejoursAgence[sem.code];
         if (sejour) {
+          const estRefuseGuide = estSejourRefuseGuide(sejour);
+          const estAnnuleAzimut = estSejourAnnuleAzimut(sejour);
           const stGuideLower = String(sejour.statutGuide || "").toLowerCase();
-          const estRefuse = stGuideLower.includes("refusé") || stGuideLower.includes("refuse");
           const estAttribueGuide = stGuideLower.includes("attribué") || stGuideLower.includes("attribue");
           const stSejourLower = String(sejour.statut || "").toLowerCase();
           const estConfirmeSejourSheet = stSejourLower.includes("confirmé") || stSejourLower === "ok";
 
-          if (estRefuse) {
-            sejoursRefuse.push({ semCode: sem.code, moisNom: m.nom, estConfirmeSejourSheet, ...sejour });
+          if (estRefuseGuide || estAnnuleAzimut) {
+            sejoursRefuse.push({
+              semCode: sem.code,
+              moisNom: m.nom,
+              estConfirmeSejourSheet,
+              estRefuseGuide,
+              estAnnuleAzimut,
+              ...sejour
+            });
           } else if (estAttribueGuide) {
             sejoursAttribue.push({ semCode: sem.code, moisNom: m.nom, estConfirmeSejourSheet, ...sejour });
           } else {
@@ -717,35 +752,53 @@ function actualiserRecap() {
       sejoursListContainer.appendChild(groupAttrib);
     }
 
-    // 3. SÉJOURS REFUSÉS (Masqué par défaut, aucun bouton d'action)
+// 3. SÉJOURS REFUSÉS OU ANNULÉS (Masqué par défaut, mention texte sans étiquette entourante)
     if (sejoursRefuse.length > 0) {
       const groupRefuse = document.createElement('div');
       groupRefuse.className = 'sejours-group-box';
       groupRefuse.innerHTML = `
         <div class="sejours-subgroup-title refuse" onclick="toggleSubgroupRefuses()">
-          <span>🔴 Séjours refusés (${sejoursRefuse.length})</span>
+          <span>🔴 Séjours refusés / annulés (${sejoursRefuse.length})</span>
           <span id="arrow-subgroup-refuses" style="font-size:0.65rem; margin-left:4px;">▼</span>
         </div>
       `;
 
       const listRefusesContainer = document.createElement('div');
       listRefusesContainer.id = 'subgroup-refuses-list';
-      listRefusesContainer.style.display = 'none'; 
+      listRefusesContainer.style.display = 'none';
       listRefusesContainer.style.flexDirection = 'column';
       listRefusesContainer.style.gap = '6px';
       listRefusesContainer.style.width = '100%';
 
       sejoursRefuse.forEach(sej => {
         const item = document.createElement('div');
-        item.className = 'sejour-item-recap refuse-card';
+        const motifClasse = sej.estAnnuleAzimut ? 'motif-annule-azimut' : 'motif-refuse-guide';
+        item.className = `sejour-item-recap refuse-card ${motifClasse}`;
         const dateAffichage = formaterPlageDates(sej.date, sej.dateFin, sej.moisNom);
 
+        const mentionsMotif = [];
+        if (sej.estRefuseGuide) {
+          mentionsMotif.push(`
+            <span class="mention-motif-statut mention-motif-guide">
+              ⛔ Refusé<span class="info-bubble-trigger" data-tooltip="Le séjour a été refusé par le guide">?</span>
+            </span>
+          `);
+        }
+        if (sej.estAnnuleAzimut) {
+          mentionsMotif.push(`
+            <span class="mention-motif-statut mention-motif-azimut">
+              🚫 Annulé<span class="info-bubble-trigger" data-tooltip="Le séjour a été annulé par Azimut (ex : par manque de participants, souci d'hébergements, de météo ou autre)">?</span>
+            </span>
+          `);
+        }
+
         item.innerHTML = `
-          <div class="sejour-nom-text text-secondary">
+          <div class="sejour-nom-text refuse-nom-text">
+            <div class="refuse-badges-wrap">${mentionsMotif.join('')}</div>
             <span>${sej.nom}</span>
           </div>
           <div class="sejour-details-pills">
-            <div class="sejour-date-tag text-danger">${dateAffichage}</div>
+            <div class="sejour-date-tag refuse-date-tag">${dateAffichage}</div>
           </div>
         `;
         listRefusesContainer.appendChild(item);
@@ -759,6 +812,18 @@ function actualiserRecap() {
     topRow.style.display = 'none';
     btnEspaceAzimut.style.display = 'none';
     if (badgeTitleAConfirmer) badgeTitleAConfirmer.style.display = 'none';
+  }
+}
+
+function afficherExplicationStatutSejour(typeStatut, event) {
+  if (event) {
+    event.stopPropagation();
+  }
+
+  if (typeStatut === 'annule') {
+    alert("Le séjour a été annulé par Azimut (ex : par manque de participants, souci d'hébergements, de météo ou autre)");
+  } else if (typeStatut === 'refuse') {
+    alert("Le séjour a été refusé par le guide");
   }
 }
 
@@ -926,8 +991,7 @@ function choixGlobalMois(indexMois, statut) {
   
   const aUnSejour = mois.semaines.some(sem => {
     const sej = sejoursAgence[sem.code];
-    const stG = sej ? String(sej.statutGuide || "").toLowerCase() : "";
-    return sej && !stG.includes("refusé") && !stG.includes("refuse");
+    return sej && !estSejourEcarteFormulaire(sej);
   });
   if (aUnSejour) return;
 
@@ -999,12 +1063,11 @@ function renderGridSemaines(indexMois) {
 
   mois.semaines.forEach(sem => {
     const sejour = sejoursAgence[sem.code];
-    const stGuideLower = sejour ? String(sejour.statutGuide || "").toLowerCase() : "";
-    const estRefuse = stGuideLower.includes("refusé") || stGuideLower.includes("refuse");
+    const estEcarte = estSejourEcarteFormulaire(sejour);
 
     const div = document.createElement('div');
 
-    if (sejour && !estRefuse) {
+    if (sejour && !estEcarte) {
       div.className = `week-card sejour-engagé`;
       
       const plageDates = formaterPlageDates(sejour.date, sejour.dateFin, "");
@@ -1055,8 +1118,7 @@ function saisieCommentaireSemaine(semaineCode, texte) {
 
 function setSemaineStatut(semaineCode, statut, indexMois) {
   const sejour = sejoursAgence[semaineCode];
-  const stGuideLower = sejour ? String(sejour.statutGuide || "").toLowerCase() : "";
-  if (sejour && !stGuideLower.includes("refusé") && !stGuideLower.includes("refuse")) return;
+  if (sejour && !estSejourEcarteFormulaire(sejour)) return;
 
   disposGuide[semaineCode] = statut;
   aDesModifications = true;
@@ -1199,8 +1261,7 @@ function configurerBoutonsGlobauxMois(indexMois) {
   const mois = structureMois[indexMois];
   const aUnSejour = mois.semaines.some(sem => {
     const sej = sejoursAgence[sem.code];
-    const stG = sej ? String(sej.statutGuide || "").toLowerCase() : "";
-    return sej && !stG.includes("refusé") && !stG.includes("refuse");
+    return sej && !estSejourEcarteFormulaire(sej);
   });
 
   const choicesTopContainer = document.getElementById(`month-choices-top-${indexMois}`);
@@ -1569,10 +1630,9 @@ async function enregistrerDispos() {
 
       mois.semaines.forEach(sem => {
         const sejour = sejoursAgence[sem.code];
-        const stGuideLower = sejour ? String(sejour.statutGuide || "").toLowerCase() : "";
-        const estRefuse = stGuideLower.includes("refusé") || stGuideLower.includes("refuse");
+        const estEcarte = estSejourEcarteFormulaire(sejour);
 
-        if (!sejour || estRefuse) {
+        if (!sejour || estEcarte) {
           const comSem = commentairesSemaines[sem.code] || "";
           const codeClean = extraireCodeSemaine(sem.code);
 
